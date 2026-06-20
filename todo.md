@@ -129,8 +129,8 @@ This document tracks the tasks from the [Revised Implementation Plan](file:///d:
 - [x] **Create GetSubmissionResult use case**
 - [x] **Create SubmissionController**
 - [x] **Setup submission routes**
-- [ ] **Configure BullMQ queue connection**
-- [ ] **Create BullMQQueueService** (implements `IQueueService`)
+- [x] **Configure BullMQ queue connection** — Implemented in [queues.ts](file:///D:/interview-prep-platform/apps/backend-api/src/infrastructure/queue/queues.ts).
+- [x] **Create BullMQQueueService** (implements `IQueueService`) — Implemented in [BullMQQueueService.ts](file:///D:/interview-prep-platform/apps/backend-api/src/infrastructure/queue/BullMQQueueService.ts).
 - [x] **Write unit tests for SubmitSolution**
 
 ---

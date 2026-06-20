@@ -11,6 +11,8 @@ import { PrismaSubmissionRepository } from '../infrastructure/database/repositor
 import { JoseAuthTokenService } from '../infrastructure/auth/JoseAuthTokenService';
 import { Argon2PasswordService } from '../infrastructure/auth/Argon2PasswordService';
 import { RedisCacheService } from '../infrastructure/cache/RedisCacheService';
+import { BullMQQueueService } from '../infrastructure/queue/BullMQQueueService';
+import { submissionQueue } from '../infrastructure/queue/queues';
 
 // --- Use Cases ---
 import { RegisterUser } from '../application/use-cases/auth/RegisterUser';
@@ -29,7 +31,6 @@ import { ProblemController } from '../presentation/controllers/ProblemController
 import { SubmissionController } from '../presentation/controllers/SubmissionController';
 
 // --- Interfaces for Mock Services ---
-import type { IQueueService } from '../domain/ports/services/IQueueService';
 import type { INotificationService } from '../domain/ports/services/INotificationService';
 
 // ============================================================
@@ -43,15 +44,7 @@ const submissionRepository = new PrismaSubmissionRepository();
 const authTokenService = new JoseAuthTokenService();
 const passwordService = new Argon2PasswordService();
 const cacheService = new RedisCacheService();
-
-// Mock Services for Queue and Notification
-const mockQueueService: IQueueService = {
-  enqueueSubmission: async (job) => {
-    console.log(`[Queue Mock] Enqueued submission ${job.submissionId} for user ${job.userId}`);
-    return `job-${job.submissionId}`;
-  },
-  getJobStatus: async (_jobId) => 'active',
-};
+const queueService = new BullMQQueueService(submissionQueue);
 
 const mockNotificationService: INotificationService = {
   notifyUser: (userId, event, data) => {
@@ -71,10 +64,10 @@ const getProblemBySlug = new GetProblemBySlug(problemRepository, cacheService);
 const submitSolution = new SubmitSolution(
   submissionRepository,
   problemRepository,
-  mockQueueService,
+  queueService,
   mockNotificationService,
 );
-const runCode = new RunCode(problemRepository, mockQueueService);
+const runCode = new RunCode(problemRepository, queueService);
 const getSubmissions = new GetSubmissions(submissionRepository);
 const getSubmissionResult = new GetSubmissionResult(submissionRepository);
 

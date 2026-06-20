@@ -8,11 +8,11 @@ This document tracks the tasks from the [Revised Implementation Plan](file:///d:
 
 | Phase | Completed Tasks | Total Tasks | Completion % | Status |
 | :--- | :---: | :---: | :---: | :---: |
-| **Sprint 1: Foundation** | 18 | 49 | 36.7% | In Progress |
+| **Sprint 1: Foundation** | 27 | 49 | 55.1% | In Progress |
 | **Sprint 2: Core Engine** | 1 | 31 | 3.2% | Not Started |
 | **Sprint 3: Polish & Admin** | 0 | 39 | 0.0% | Not Started |
 | **Sprint 4: Differentiation**| 0 | 33 | 0.0% | Not Started |
-| **Total Project** | **19** | **152** | **12.5%** | **In Progress** |
+| **Total Project** | **28** | **152** | **18.4%** | **In Progress** |
 
 ---
 
@@ -33,8 +33,8 @@ This document tracks the tasks from the [Revised Implementation Plan](file:///d:
 
 #### Day 3–4: Database & Domain Layer
 - [x] **Create Prisma schema** — All required models defined in [schema.prisma](file:///d:/interview-prep-platform/apps/backend-api/src/infrastructure/database/prisma/schema.prisma).
-- [ ] **Run initial database migration**
-- [ ] **Write database seed script** (with 15+ real JS interview problems)
+- [x] **Run initial database migration** — Database is fully migrated with initial structures on port 5433.
+- [x] **Write database seed script** — Implemented in [seed.ts](file:///d:/interview-prep-platform/apps/backend-api/src/infrastructure/database/prisma/seed.ts) (seeded with 15+ rich interview problems).
 - [ ] **Create domain entities** (User, Problem, TestCase, Submission)
 - [ ] **Create value objects** (Email, Slug, Difficulty, SubmissionStatus)
 - [x] **Create domain errors** — Implemented in [domain/errors](file:///d:/interview-prep-platform/apps/backend-api/src/domain/errors/index.ts).
@@ -43,10 +43,10 @@ This document tracks the tasks from the [Revised Implementation Plan](file:///d:
   - Service Ports: [IAuthTokenService](file:///d:/interview-prep-platform/apps/backend-api/src/domain/ports/services/IAuthTokenService.ts), [ICacheService](file:///d:/interview-prep-platform/apps/backend-api/src/domain/ports/services/ICacheService.ts), [INotificationService](file:///d:/interview-prep-platform/apps/backend-api/src/domain/ports/services/INotificationService.ts), [IPasswordService](file:///d:/interview-prep-platform/apps/backend-api/src/domain/ports/services/IPasswordService.ts), [IQueueService](file:///d:/interview-prep-platform/apps/backend-api/src/domain/ports/services/IQueueService.ts)
 
 #### Day 5: Infrastructure Layer
-- [ ] **Implement PrismaUserRepository**
-- [ ] **Implement PrismaProblemRepository**
-- [ ] **Implement Argon2PasswordService**
-- [ ] **Implement JoseAuthTokenService**
+- [x] **Implement PrismaUserRepository** — Implemented in [PrismaUserRepository.ts](file:///d:/interview-prep-platform/apps/backend-api/src/infrastructure/database/repositories/PrismaUserRepository.ts).
+- [x] **Implement PrismaProblemRepository** — Implemented in [PrismaProblemRepository.ts](file:///d:/interview-prep-platform/apps/backend-api/src/infrastructure/database/repositories/PrismaProblemRepository.ts).
+- [x] **Implement Argon2PasswordService** — Implemented in [Argon2PasswordService.ts](file:///d:/interview-prep-platform/apps/backend-api/src/infrastructure/auth/Argon2PasswordService.ts).
+- [x] **Implement JoseAuthTokenService** — Implemented in [JoseAuthTokenService.ts](file:///d:/interview-prep-platform/apps/backend-api/src/infrastructure/auth/JoseAuthTokenService.ts).
 - [x] **Setup Pino Logger** — Configured in [config/logger.ts](file:///d:/interview-prep-platform/apps/backend-api/src/config/logger.ts).
 - [x] **Create validated `env.ts`** — Validated using Zod in [config/env.ts](file:///d:/interview-prep-platform/apps/backend-api/src/config/env.ts).
 
@@ -57,13 +57,13 @@ This document tracks the tasks from the [Revised Implementation Plan](file:///d:
 - [x] **Create RegisterUser use case** — Implemented in [RegisterUser.ts](file:///d:/interview-prep-platform/apps/backend-api/src/application/use-cases/auth/RegisterUser.ts).
 - [x] **Create LoginUser use case** — Implemented in [LoginUser.ts](file:///d:/interview-prep-platform/apps/backend-api/src/application/use-cases/auth/LoginUser.ts).
 - [ ] **Create RefreshToken use case**
-- [ ] **Create AuthController**
-- [ ] **Create authenticate middleware (JWT verification)**
+- [x] **Create AuthController** — Implemented in [AuthController.ts](file:///d:/interview-prep-platform/apps/backend-api/src/presentation/controllers/AuthController.ts).
+- [x] **Create authenticate middleware (JWT verification)** — Implemented in [authenticate.ts](file:///d:/interview-prep-platform/apps/backend-api/src/presentation/middleware/authenticate.ts).
 - [ ] **Create authorize middleware (role-based)**
 - [x] **Create validate-request middleware (Zod)** — Implemented in [validate-request.ts](file:///d:/interview-prep-platform/apps/backend-api/src/presentation/middleware/validate-request.ts).
 - [x] **Create error-handler middleware** — Implemented in [error-handler.ts](file:///d:/interview-prep-platform/apps/backend-api/src/presentation/middleware/error-handler.ts).
 - [ ] **Create rate-limiter middleware**
-- [ ] **Setup auth routes**
+- [x] **Setup auth routes** — Implemented in [auth.routes.ts](file:///d:/interview-prep-platform/apps/backend-api/src/presentation/routes/auth.routes.ts) and mounted in [routes/index.ts](file:///d:/interview-prep-platform/apps/backend-api/src/presentation/routes/index.ts).
 - [ ] **Write unit tests for RegisterUser and LoginUser**
 
 #### Day 8–9: Problem Listing (Backend & Frontend)

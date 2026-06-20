@@ -8,11 +8,11 @@ This document tracks the tasks from the [Revised Implementation Plan](file:///d:
 
 | Phase                         | Completed Tasks | Total Tasks | Completion % |     Status      |
 | :---------------------------- | :-------------: | :---------: | :----------: | :-------------: |
-| **Sprint 1: Foundation**      |       53        |     54      |    98.1%     |   In Progress   |
-| **Sprint 2: Core Engine**     |        1        |     32      |     3.1%     |   Not Started   |
+| **Sprint 1: Foundation**      |       54        |     54      |    100.0%    |    Completed    |
+| **Sprint 2: Core Engine**     |        8        |     32      |    25.0%     |   In Progress   |
 | **Sprint 3: Polish & Admin**  |        0        |     34      |     0.0%     |   Not Started   |
 | **Sprint 4: Differentiation** |        0        |     33      |     0.0%     |   Not Started   |
-| **Total Project**             |     **54**      |   **153**   |  **35.3%**   | **In Progress** |
+| **Total Project**             |     **62**      |   **153**   |  **40.5%**   | **In Progress** |
 
 ---
 
@@ -100,7 +100,7 @@ This document tracks the tasks from the [Revised Implementation Plan](file:///d:
 #### Day 10: CI & First Deploy
 
 - [x] **Create GitHub Actions CI workflow** (`lint` → `typecheck` → `test` → `build`)
-- [ ] **Deploy frontend workspace to Vercel (preview)**
+- [x] **Deploy frontend workspace to Vercel (preview)** — Hosted by user.
 - [x] **Test full auth flow end-to-end**
 
 ---
@@ -113,13 +113,13 @@ This document tracks the tasks from the [Revised Implementation Plan](file:///d:
 
 #### Day 11–12: Problem Workspace
 
-- [ ] **Create split-pane workspace layout** (description | editor)
-- [ ] **Integrate Monaco Editor** (with starter code loading)
-- [ ] **Create editor toolbar** (Run, Submit, Reset buttons)
-- [ ] **Create theme selector for editor**
-- [ ] **Create output panel** (tabbed: test cases | results)
-- [ ] **Implement keyboard shortcuts** (`Ctrl+Enter` = submit, `Ctrl+S` = save)
-- [ ] **Create problem description renderer** (`react-markdown`)
+- [x] **Create split-pane workspace layout** (description | editor)
+- [x] **Integrate Monaco Editor** (with starter code loading)
+- [x] **Create editor toolbar** (Run, Submit, Reset buttons)
+- [x] **Create theme selector for editor**
+- [x] **Create output panel** (tabbed: test cases | results)
+- [x] **Implement keyboard shortcuts** (`Ctrl+Enter` = submit, `Ctrl+S` = save)
+- [x] **Create problem description renderer** (`react-markdown`)
 
 #### Day 13–14: Submission System (Backend)
 

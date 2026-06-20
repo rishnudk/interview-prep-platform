@@ -81,7 +81,7 @@ export const submissionWorker = new Worker(
       if (isPlayground) {
         const playgroundResult = {
           runId: submissionId,
-          status: finalStatus,
+          status: 'Finished',
           passed: execResult.passed,
           passedCases: execResult.passedCases,
           totalCases: execResult.totalCases,
@@ -98,7 +98,8 @@ export const submissionWorker = new Worker(
           JSON.stringify({
             userId,
             submissionId,
-            status: finalStatus,
+            status: 'Finished',
+            error: execResult.error,
             data: playgroundResult,
           }),
         );
@@ -139,12 +140,12 @@ export const submissionWorker = new Worker(
             userId,
             submissionId,
             status: finalStatus,
+            error: execResult.error,
             data: {
               runtime: execResult.runtime,
               memory: execResult.memory,
               passedCases: execResult.passedCases,
               totalCases: execResult.totalCases,
-              error: execResult.error,
             },
           }),
         );

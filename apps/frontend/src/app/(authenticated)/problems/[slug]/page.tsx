@@ -138,7 +138,9 @@ export default function ProblemWorkspacePage() {
         setActiveJobId(null);
 
         let stdout = '';
-        if (payload.data?.results) {
+        if (payload.error) {
+          stdout = payload.error;
+        } else if (payload.data?.results) {
           const results = payload.data.results as Array<{
             id: string;
             passed: boolean;
@@ -159,8 +161,6 @@ export default function ProblemWorkspacePage() {
         } else if (payload.data) {
           const d = payload.data;
           stdout = `Passed Cases: ${d.passedCases} / ${d.totalCases}\nRuntime: ${d.runtime} ms\nMemory: ${typeof d.memory === 'number' ? (d.memory / 1024 / 1024).toFixed(2) : 0} MB`;
-        } else if (payload.error) {
-          stdout = payload.error;
         }
 
         setConsoleOutput({

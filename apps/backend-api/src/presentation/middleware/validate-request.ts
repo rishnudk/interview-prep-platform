@@ -23,7 +23,15 @@ export function validateRequest(schema: ZodSchema, target: ValidationTarget = 'b
     }
 
     // Replace with parsed (and coerced) data
-    req[target] = result.data;
+    if (target === 'query') {
+      Object.defineProperty(req, 'query', {
+        value: result.data,
+        writable: true,
+        configurable: true,
+      });
+    } else {
+      req[target] = result.data;
+    }
     next();
   };
 }

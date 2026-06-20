@@ -105,7 +105,9 @@ try {
     try {
       actual = targetFn(...args);
     } catch (e) {
-      error = e.message || String(e);
+      const errName = e.name || 'Error';
+      const errMsg = e.message || String(e);
+      error = errName + ': ' + errMsg;
     }
     const end = process.hrtime.bigint();
     const runtimeMs = Number(end - start) / 1e6; // to ms
@@ -122,8 +124,10 @@ try {
 
   console.log(JSON.stringify({ results }));
 } catch (globalErr) {
+  const errName = globalErr.name || 'Error';
+  const errMsg = globalErr.message || String(globalErr);
   console.log(JSON.stringify({
-    error: globalErr.message || String(globalErr)
+    error: errName + ': ' + errMsg
   }));
   process.exit(1);
 }

@@ -13,10 +13,12 @@ async function setMonacoValue(page: any, value: string) {
 }
 
 test.describe('E2E Submission & Run Code Flow', () => {
-  const testEmail = `e2e-user-${Date.now()}@example.com`;
   const password = 'Password123!';
 
   test.beforeEach(async ({ page }) => {
+    // Generate a unique email for every single test run to prevent DB conflicts
+    const testEmail = `e2e-user-${Date.now()}-${Math.floor(Math.random() * 1000000)}@example.com`;
+
     // 1. Go to register page
     await page.goto('/register');
 
@@ -37,6 +39,10 @@ test.describe('E2E Submission & Run Code Flow', () => {
     await page.goto('/problems');
     await page.waitForURL('**/problems');
 
+    // Search for "Two Sum" to bring it onto the first page
+    await page.fill('input[placeholder*="Search challenges"]', 'Two Sum');
+    await page.waitForTimeout(600); // wait for search debounce
+
     // 2. Click on the Two Sum challenge
     await page.click('a:has-text("Two Sum")');
     await page.waitForURL('**/problems/two-sum');
@@ -56,21 +62,17 @@ test.describe('E2E Submission & Run Code Flow', () => {
     await expect(page.locator('button:has-text("Result")')).toHaveClass(/bg-zinc-800/);
 
     // 6. Wait for the processing to complete and show results
-    await page.waitForSelector('.font-mono:has-text("Finished")', { timeout: 15000 });
+    await page.waitForSelector('.font-mono:has-text("FINISHED")', { timeout: 15000 });
 
     // 7. Verify the output displays passed test cases
     const consoleText = await page.locator('.font-mono').innerText();
-    expect(consoleText).toContain('Finished');
+    expect(consoleText).toContain('FINISHED');
     expect(consoleText).toContain('Test Case 1: PASSED');
   });
 
   test('should submit a correct solution and get ACCEPTED status', async ({ page }) => {
-    // 1. Go to challenges page
-    await page.goto('/problems');
-    await page.waitForURL('**/problems');
-
-    // 2. Click on the Two Sum challenge
-    await page.click('a:has-text("Two Sum")');
+    // 1. Go directly to Two Sum challenge page
+    await page.goto('/problems/two-sum');
     await page.waitForURL('**/problems/two-sum');
 
     // 3. Set Monaco Editor code to a correct Two Sum solution

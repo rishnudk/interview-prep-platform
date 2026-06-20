@@ -9,10 +9,10 @@ This document tracks the tasks from the [Revised Implementation Plan](file:///d:
 | Phase                         | Completed Tasks | Total Tasks | Completion % |     Status      |
 | :---------------------------- | :-------------: | :---------: | :----------: | :-------------: |
 | **Sprint 1: Foundation**      |       54        |     54      |    100.0%    |    Completed    |
-| **Sprint 2: Core Engine**     |       14        |     32      |    43.8%     |   In Progress   |
+| **Sprint 2: Core Engine**     |       32        |     32      |    100.0%    |    Completed    |
 | **Sprint 3: Polish & Admin**  |        0        |     34      |     0.0%     |   Not Started   |
 | **Sprint 4: Differentiation** |        0        |     33      |     0.0%     |   Not Started   |
-| **Total Project**             |     **68**      |   **153**   |  **44.4%**   | **In Progress** |
+| **Total Project**             |     **86**      |   **153**   |  **56.2%**   | **In Progress** |
 
 ---
 
@@ -165,9 +165,9 @@ This document tracks the tasks from the [Revised Implementation Plan](file:///d:
 
 #### Day 20: Integration Testing
 
-- [ ] **Test full submission flow end-to-end**
-- [ ] **Test execution edge cases** (runtime error, timeout, compile error)
-- [ ] **Write Playwright E2E tests for submission flow**
+- [x] **Test full submission flow end-to-end**
+- [x] **Test execution edge cases** (runtime error, timeout, compile error)
+- [x] **Write Playwright E2E tests for submission flow**
 
 ---
 

@@ -19,12 +19,18 @@
     "clean": "turbo run clean",
     "db:migrate": "npm run migrate:dev --workspace=apps/backend-api",
     "db:seed": "npm run seed --workspace=apps/backend-api",
-    "db:studio": "npm run studio --workspace=apps/backend-api"
+    "db:studio": "npm run studio --workspace=apps/backend-api",
+    "prepare": "husky"
   },
   "devDependencies": {
-    "turbo": "^2.5.0",
+    "husky": "^9.1.7",
+    "lint-staged": "^17.0.7",
     "prettier": "^3.5.0",
+    "turbo": "^2.5.0",
     "typescript": "^5.8.0"
+  },
+  "lint-staged": {
+    "**/*.{js,jsx,ts,tsx,json,md,css,scss}": "prettier --write"
   },
   "engines": {
     "node": ">=22.0.0"

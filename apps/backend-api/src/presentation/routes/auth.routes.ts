@@ -38,4 +38,15 @@ authRoutes.post('/github', validateRequest(GithubAuthSchema), (req, res, next) =
   container.controllers.authController.githubLogin(req, res, next);
 });
 
+const GoogleAuthSchema = z.object({
+  googleId: z.string().min(1, 'Google ID is required'),
+  email: z.string().email('Invalid email address'),
+  name: z.string().min(1, 'Name is required'),
+  image: z.string().nullable().optional(),
+});
+
+authRoutes.post('/google', validateRequest(GoogleAuthSchema), (req, res, next) => {
+  container.controllers.authController.googleLogin(req, res, next);
+});
+
 export { authRoutes };

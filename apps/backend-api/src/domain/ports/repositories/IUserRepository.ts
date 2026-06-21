@@ -12,6 +12,7 @@ export interface IUserRepository {
     password?: string | null;
     role: string;
     githubId?: string | null;
+    googleId?: string | null;
     image?: string | null;
   }): Promise<User>;
 
@@ -21,11 +22,18 @@ export interface IUserRepository {
 
   findByGithubId(githubId: string): Promise<User | null>;
 
+  findByGoogleId(googleId: string): Promise<User | null>;
+
   updateStreak(userId: string, streak: number, lastActiveAt: Date): Promise<void>;
 
   update(
     id: string,
-    data: { name?: string; image?: string | null; githubId?: string | null },
+    data: {
+      name?: string;
+      image?: string | null;
+      githubId?: string | null;
+      googleId?: string | null;
+    },
   ): Promise<User>;
 
   count(): Promise<number>;

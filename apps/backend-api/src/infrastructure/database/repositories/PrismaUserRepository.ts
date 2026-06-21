@@ -29,6 +29,7 @@ export class PrismaUserRepository implements IUserRepository {
     password?: string | null;
     role: string;
     githubId?: string | null;
+    googleId?: string | null;
     image?: string | null;
   }): Promise<User> {
     const prismaUser = await prisma.user.create({
@@ -38,6 +39,7 @@ export class PrismaUserRepository implements IUserRepository {
         password: data.password || null,
         role: data.role as any,
         githubId: data.githubId || null,
+        googleId: data.googleId || null,
         image: data.image || null,
       },
     });
@@ -76,6 +78,15 @@ export class PrismaUserRepository implements IUserRepository {
     return this.mapPrismaUser(prismaUser);
   }
 
+  async findByGoogleId(googleId: string): Promise<User | null> {
+    const prismaUser = await prisma.user.findUnique({
+      where: { googleId },
+    });
+
+    if (!prismaUser) return null;
+    return this.mapPrismaUser(prismaUser);
+  }
+
   async updateStreak(userId: string, streak: number, lastActiveAt: Date): Promise<void> {
     await prisma.user.update({
       where: { id: userId },
@@ -88,7 +99,12 @@ export class PrismaUserRepository implements IUserRepository {
 
   async update(
     id: string,
-    data: { name?: string; image?: string | null; githubId?: string | null },
+    data: {
+      name?: string;
+      image?: string | null;
+      githubId?: string | null;
+      googleId?: string | null;
+    },
   ): Promise<User> {
     const prismaUser = await prisma.user.update({
       where: { id },
@@ -96,6 +112,7 @@ export class PrismaUserRepository implements IUserRepository {
         name: data.name,
         image: data.image,
         githubId: data.githubId,
+        googleId: data.googleId,
       },
     });
 

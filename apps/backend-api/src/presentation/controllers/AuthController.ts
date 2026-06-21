@@ -3,6 +3,7 @@ import type { RegisterUser } from '../../application/use-cases/auth/RegisterUser
 import type { LoginUser } from '../../application/use-cases/auth/LoginUser';
 import type { RefreshToken } from '../../application/use-cases/auth/RefreshToken';
 import type { AuthenticateGithubUser } from '../../application/use-cases/auth/AuthenticateGithubUser';
+import type { AuthenticateGoogleUser } from '../../application/use-cases/auth/AuthenticateGoogleUser';
 
 // ============================================================
 // AuthController
@@ -15,6 +16,7 @@ export class AuthController {
     private readonly loginUser: LoginUser,
     private readonly refreshToken: RefreshToken,
     private readonly authenticateGithubUser: AuthenticateGithubUser,
+    private readonly authenticateGoogleUser: AuthenticateGoogleUser,
   ) {}
 
   refresh = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
@@ -56,6 +58,18 @@ export class AuthController {
   githubLogin = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
     try {
       const result = await this.authenticateGithubUser.execute(req.body);
+      res.status(200).json({
+        success: true,
+        data: result,
+      });
+    } catch (error) {
+      next(error);
+    }
+  };
+
+  googleLogin = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
+    try {
+      const result = await this.authenticateGoogleUser.execute(req.body);
       res.status(200).json({
         success: true,
         data: result,

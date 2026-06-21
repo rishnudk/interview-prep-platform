@@ -23,6 +23,7 @@ import { RegisterUser } from '../application/use-cases/auth/RegisterUser';
 import { LoginUser } from '../application/use-cases/auth/LoginUser';
 import { RefreshToken } from '../application/use-cases/auth/RefreshToken';
 import { AuthenticateGithubUser } from '../application/use-cases/auth/AuthenticateGithubUser';
+import { AuthenticateGoogleUser } from '../application/use-cases/auth/AuthenticateGoogleUser';
 import { GetProblems } from '../application/use-cases/problem/GetProblems';
 import { GetProblemBySlug } from '../application/use-cases/problem/GetProblemBySlug';
 import { GetDailyChallenge } from '../application/use-cases/problem/GetDailyChallenge';
@@ -78,6 +79,7 @@ const registerUser = new RegisterUser(userRepository, passwordService, authToken
 const loginUser = new LoginUser(userRepository, passwordService, authTokenService);
 const refreshToken = new RefreshToken(userRepository, authTokenService);
 const authenticateGithubUser = new AuthenticateGithubUser(userRepository, authTokenService);
+const authenticateGoogleUser = new AuthenticateGoogleUser(userRepository, authTokenService);
 const getProblems = new GetProblems(problemRepository, cacheService);
 const getProblemBySlug = new GetProblemBySlug(problemRepository, cacheService);
 const getDailyChallenge = new GetDailyChallenge(problemRepository, cacheService);
@@ -117,6 +119,7 @@ const authController = new AuthController(
   loginUser,
   refreshToken,
   authenticateGithubUser,
+  authenticateGoogleUser,
 );
 const problemController = new ProblemController(
   getProblems,
@@ -167,6 +170,7 @@ export const container = {
     loginUser,
     refreshToken,
     authenticateGithubUser,
+    authenticateGoogleUser,
     getProblems,
     getProblemBySlug,
     getDailyChallenge,

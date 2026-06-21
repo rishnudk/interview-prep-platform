@@ -51,6 +51,7 @@ model User {
   image        String?      // Avatar URL from OAuth
   role         UserRole     @default(STUDENT)
   githubId     String?      @unique
+  googleId     String?      @unique
   streak       Int          @default(0)
   lastActiveAt DateTime?
   createdAt    DateTime     @default(now())
@@ -61,6 +62,7 @@ model User {
 
   @@index([email])
   @@index([githubId])
+  @@index([googleId])
   @@map("users")
 }
 

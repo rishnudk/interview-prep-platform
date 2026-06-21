@@ -8,6 +8,7 @@
 import { PrismaUserRepository } from '../infrastructure/database/repositories/PrismaUserRepository';
 import { PrismaProblemRepository } from '../infrastructure/database/repositories/PrismaProblemRepository';
 import { PrismaSubmissionRepository } from '../infrastructure/database/repositories/PrismaSubmissionRepository';
+import { PrismaTestCaseRepository } from '../infrastructure/database/repositories/PrismaTestCaseRepository';
 import { JoseAuthTokenService } from '../infrastructure/auth/JoseAuthTokenService';
 import { Argon2PasswordService } from '../infrastructure/auth/Argon2PasswordService';
 import { RedisCacheService } from '../infrastructure/cache/RedisCacheService';
@@ -30,11 +31,23 @@ import { GetCategoryProgress } from '../application/use-cases/dashboard/GetCateg
 import { GetActivityHeatmap } from '../application/use-cases/dashboard/GetActivityHeatmap';
 import { GetRecentActivity } from '../application/use-cases/dashboard/GetRecentActivity';
 
+// Admin & Test Cases Use Cases
+import { GetAdminStats } from '../application/use-cases/admin/GetAdminStats';
+import { GetAdminProblems } from '../application/use-cases/admin/GetAdminProblems';
+import { CreateProblem } from '../application/use-cases/problem/CreateProblem';
+import { UpdateProblem } from '../application/use-cases/problem/UpdateProblem';
+import { DeleteProblem } from '../application/use-cases/problem/DeleteProblem';
+import { CreateTestCase } from '../application/use-cases/testcase/CreateTestCase';
+import { UpdateTestCase } from '../application/use-cases/testcase/UpdateTestCase';
+import { DeleteTestCase } from '../application/use-cases/testcase/DeleteTestCase';
+import { GetTestCasesByProblemId } from '../application/use-cases/testcase/GetTestCasesByProblemId';
+
 // --- Controllers ---
 import { AuthController } from '../presentation/controllers/AuthController';
 import { ProblemController } from '../presentation/controllers/ProblemController';
 import { SubmissionController } from '../presentation/controllers/SubmissionController';
 import { DashboardController } from '../presentation/controllers/DashboardController';
+import { AdminController } from '../presentation/controllers/AdminController';
 
 // ============================================================
 // Wire Dependencies
@@ -44,6 +57,7 @@ import { DashboardController } from '../presentation/controllers/DashboardContro
 const userRepository = new PrismaUserRepository();
 const problemRepository = new PrismaProblemRepository();
 const submissionRepository = new PrismaSubmissionRepository();
+const testCaseRepository = new PrismaTestCaseRepository();
 const authTokenService = new JoseAuthTokenService();
 const passwordService = new Argon2PasswordService();
 const cacheService = new RedisCacheService();
@@ -72,6 +86,17 @@ const getCategoryProgress = new GetCategoryProgress(submissionRepository, proble
 const getActivityHeatmap = new GetActivityHeatmap(submissionRepository);
 const getRecentActivity = new GetRecentActivity(submissionRepository);
 
+// Admin & Test Cases
+const getAdminStats = new GetAdminStats(userRepository, submissionRepository, problemRepository);
+const getAdminProblems = new GetAdminProblems(problemRepository);
+const createProblem = new CreateProblem(problemRepository);
+const updateProblem = new UpdateProblem(problemRepository);
+const deleteProblem = new DeleteProblem(problemRepository);
+const createTestCase = new CreateTestCase(testCaseRepository, problemRepository);
+const updateTestCase = new UpdateTestCase(testCaseRepository);
+const deleteTestCase = new DeleteTestCase(testCaseRepository);
+const getTestCasesByProblemId = new GetTestCasesByProblemId(testCaseRepository);
+
 // Step 3: Instantiate controllers
 const authController = new AuthController(registerUser, loginUser, refreshToken);
 const problemController = new ProblemController(getProblems, getProblemBySlug);
@@ -87,6 +112,17 @@ const dashboardController = new DashboardController(
   getActivityHeatmap,
   getRecentActivity,
 );
+const adminController = new AdminController(
+  getAdminStats,
+  getAdminProblems,
+  createProblem,
+  updateProblem,
+  deleteProblem,
+  createTestCase,
+  updateTestCase,
+  deleteTestCase,
+  getTestCasesByProblemId,
+);
 
 // Step 4: Export container
 export const container = {
@@ -94,6 +130,7 @@ export const container = {
     userRepository,
     problemRepository,
     submissionRepository,
+    testCaseRepository,
   },
   services: {
     authTokenService,
@@ -114,11 +151,21 @@ export const container = {
     getCategoryProgress,
     getActivityHeatmap,
     getRecentActivity,
+    getAdminStats,
+    getAdminProblems,
+    createProblem,
+    updateProblem,
+    deleteProblem,
+    createTestCase,
+    updateTestCase,
+    deleteTestCase,
+    getTestCasesByProblemId,
   },
   controllers: {
     authController,
     problemController,
     submissionController,
     dashboardController,
+    adminController,
   },
 };

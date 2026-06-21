@@ -4,6 +4,7 @@ import { authRoutes } from './auth.routes';
 import { problemRoutes } from './problem.routes';
 import { submissionRoutes } from './submission.routes';
 import { dashboardRoutes } from './dashboard.routes';
+import { adminRoutes } from './admin.routes';
 
 // ============================================================
 // Route Aggregator
@@ -20,7 +21,6 @@ router.use('/api/auth', authRoutes);
 router.use('/api/problems', problemRoutes);
 router.use('/api/submissions', submissionRoutes);
 router.use('/api/dashboard', dashboardRoutes);
-// TODO: Add feature routes as they are built
-// router.use('/api/admin', adminRoutes);
+router.use('/api/admin', adminRoutes);
 
 export { router };

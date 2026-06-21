@@ -34,4 +34,6 @@ export interface IProblemRepository {
   countByDifficulty(): Promise<Record<string, number>>;
 
   countByCategory(): Promise<Record<string, number>>;
+
+  countAll(): Promise<number>;
 }

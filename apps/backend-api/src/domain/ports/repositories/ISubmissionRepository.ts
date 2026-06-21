@@ -87,4 +87,8 @@ export interface ISubmissionRepository {
     startDate: Date,
     endDate: Date,
   ): Promise<Array<{ date: string; count: number }>>;
+
+  countAll(): Promise<number>;
+
+  countAllAccepted(): Promise<number>;
 }

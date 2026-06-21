@@ -10,9 +10,9 @@ This document tracks the tasks from the [Revised Implementation Plan](file:///d:
 | :---------------------------- | :-------------: | :---------: | :----------: | :-------------: |
 | **Sprint 1: Foundation**      |       54        |     54      |    100.0%    |    Completed    |
 | **Sprint 2: Core Engine**     |       32        |     32      |    100.0%    |    Completed    |
-| **Sprint 3: Polish & Admin**  |       14        |     34      |    41.2%     |   In Progress   |
+| **Sprint 3: Polish & Admin**  |       22        |     34      |    64.7%     |   In Progress   |
 | **Sprint 4: Differentiation** |        0        |     33      |     0.0%     |   Not Started   |
-| **Total Project**             |     **100**     |   **153**   |  **65.4%**   | **In Progress** |
+| **Total Project**             |     **108**     |   **153**   |  **70.6%**   | **In Progress** |
 
 ---
 
@@ -204,14 +204,14 @@ This document tracks the tasks from the [Revised Implementation Plan](file:///d:
 
 #### Day 25–27: Admin Panel
 
-- [ ] **Create admin layout with sidebar navigation**
-- [ ] **Create problem management table** (list, search, filter)
-- [ ] **Create problem form** (create/edit) with Markdown + Monaco inputs
-- [ ] **Create test case management** (add/edit/delete, hidden/visible, ordering)
-- [ ] **Create admin stats page** (total users, total submissions, etc.)
-- [ ] **Add role-based route protection** (frontend + backend)
-- [ ] **Create problem CRUD use cases** (`CreateProblem`, `UpdateProblem`, `DeleteProblem`)
-- [ ] **Create test case CRUD use cases** (`CreateTestCase`, `UpdateTestCase`, `DeleteTestCase`)
+- [x] **Create admin layout with sidebar navigation**
+- [x] **Create problem management table** (list, search, filter)
+- [x] **Create problem form** (create/edit) with Markdown + Monaco inputs
+- [x] **Create test case management** (add/edit/delete, hidden/visible, ordering)
+- [x] **Create admin stats page** (total users, total submissions, etc.)
+- [x] **Add role-based route protection** (frontend + backend)
+- [x] **Create problem CRUD use cases** (`CreateProblem`, `UpdateProblem`, `DeleteProblem`)
+- [x] **Create test case CRUD use cases** (`CreateTestCase`, `UpdateTestCase`, `DeleteTestCase`)
 
 #### Day 28–30: UI Polish
 

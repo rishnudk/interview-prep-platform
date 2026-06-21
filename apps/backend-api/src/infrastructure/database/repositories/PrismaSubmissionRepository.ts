@@ -330,4 +330,14 @@ export class PrismaSubmissionRepository implements ISubmissionRepository {
 
     return Object.entries(counts).map(([date, count]) => ({ date, count }));
   }
+
+  async countAll(): Promise<number> {
+    return prisma.submission.count();
+  }
+
+  async countAllAccepted(): Promise<number> {
+    return prisma.submission.count({
+      where: { status: 'ACCEPTED' },
+    });
+  }
 }

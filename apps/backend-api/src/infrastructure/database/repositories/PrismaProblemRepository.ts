@@ -208,4 +208,8 @@ export class PrismaProblemRepository implements IProblemRepository {
     });
     return result;
   }
+
+  async countAll(): Promise<number> {
+    return prisma.problem.count();
+  }
 }

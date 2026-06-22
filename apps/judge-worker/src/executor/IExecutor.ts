@@ -29,5 +29,6 @@ export interface IExecutor {
     code: string,
     testCases: TestCaseInput[],
     timeoutMs?: number,
+    files?: Record<string, string>,
   ): Promise<ExecutionResult>;
 }

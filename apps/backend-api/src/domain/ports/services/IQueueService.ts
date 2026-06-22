@@ -7,6 +7,7 @@ export interface SubmissionJob {
   userId: string;
   problemId: string;
   code: string;
+  files?: Record<string, string>;
   language: string;
 }
 

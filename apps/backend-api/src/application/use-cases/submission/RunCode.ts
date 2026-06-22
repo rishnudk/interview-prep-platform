@@ -36,6 +36,7 @@ export class RunCode implements IUseCase<RunCodeInput, RunCodeOutput> {
       userId: input.userId,
       problemId: input.problemId,
       code: input.code,
+      files: input.files,
       language: input.language,
     });
 

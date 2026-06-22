@@ -28,6 +28,7 @@ export interface Problem {
   difficulty: Difficulty;
   category: Category;
   starterCode: string;
+  starterFiles?: Record<string, string> | null;
   solutionCode?: string | null;
   tags: string[];
   order: number;

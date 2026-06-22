@@ -48,6 +48,7 @@ export class SubmitSolution implements IUseCase<SubmitSolutionInput, Submission>
       userId: input.userId,
       problemId: input.problemId,
       code: input.code,
+      files: input.files,
       language: input.language,
     });
 

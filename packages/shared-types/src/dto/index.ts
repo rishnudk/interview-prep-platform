@@ -80,12 +80,14 @@ export type ProblemFilterDTO = z.infer<typeof ProblemFilterSchema>;
 export const SubmitSolutionSchema = z.object({
   problemId: z.string().cuid(),
   code: z.string().min(1, 'Code is required').max(50000),
+  files: z.record(z.string(), z.string()).optional(),
   language: z.string().default('javascript'),
 });
 
 export const RunCodeSchema = z.object({
   problemId: z.string().cuid(),
   code: z.string().min(1, 'Code is required').max(50000),
+  files: z.record(z.string(), z.string()).optional(),
   language: z.string().default('javascript'),
 });
 

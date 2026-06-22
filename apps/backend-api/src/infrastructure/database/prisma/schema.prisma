@@ -76,6 +76,7 @@ model Problem {
   difficulty   Difficulty
   category     Category
   starterCode  String     @db.Text
+  starterFiles Json?      // Multi-file starter code for React: {"styles.css": "...", "App.js": "...", "Counter.js": "..."}
   solutionCode String?    @db.Text
   tags         String[]
   order        Int        @default(0)

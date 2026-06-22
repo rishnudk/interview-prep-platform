@@ -18,6 +18,7 @@ export class PrismaProblemRepository implements IProblemRepository {
       difficulty: prismaProblem.difficulty as Difficulty,
       category: prismaProblem.category as Category,
       starterCode: prismaProblem.starterCode,
+      starterFiles: prismaProblem.starterFiles as Record<string, string> | null,
       solutionCode: prismaProblem.solutionCode,
       tags: prismaProblem.tags,
       order: prismaProblem.order,
@@ -36,6 +37,7 @@ export class PrismaProblemRepository implements IProblemRepository {
     difficulty: string;
     category: string;
     starterCode: string;
+    starterFiles?: Record<string, string> | null;
     solutionCode?: string;
     tags?: string[];
     isPublished?: boolean;
@@ -48,6 +50,7 @@ export class PrismaProblemRepository implements IProblemRepository {
         difficulty: data.difficulty as any,
         category: data.category as any,
         starterCode: data.starterCode,
+        starterFiles: data.starterFiles || undefined,
         solutionCode: data.solutionCode || null,
         tags: data.tags || [],
         isPublished: data.isPublished ?? false,
@@ -134,6 +137,7 @@ export class PrismaProblemRepository implements IProblemRepository {
         difficulty: data.difficulty as any,
         category: data.category as any,
         starterCode: data.starterCode,
+        starterFiles: data.starterFiles || undefined,
         solutionCode: data.solutionCode,
         tags: data.tags,
         isPublished: data.isPublished,

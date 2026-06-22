@@ -4,6 +4,7 @@ import { prisma } from '../config/database';
 import { JavascriptExecutor } from '../executor/JavascriptExecutor';
 import { SqlExecutor } from '../executor/SqlExecutor';
 import { MongodbExecutor } from '../executor/MongodbExecutor';
+import { ReactExecutor } from '../executor/ReactExecutor';
 import { logger } from '../config/logger';
 import {
   getAcceptedSubmissionStreakUpdate,
@@ -16,13 +17,15 @@ import { IExecutor } from '../executor/IExecutor';
 const jsExecutor = new JavascriptExecutor();
 const sqlExecutor = new SqlExecutor();
 const mongodbExecutor = new MongodbExecutor();
+const reactExecutor = new ReactExecutor();
 
 function getExecutorForCategory(category: string): IExecutor {
   switch (category) {
     case 'JAVASCRIPT':
     case 'NODEJS':
-    case 'REACT':
       return jsExecutor;
+    case 'REACT':
+      return reactExecutor;
     case 'SQL':
       return sqlExecutor;
     case 'MONGODB':
@@ -41,7 +44,7 @@ function getExecutorForCategory(category: string): IExecutor {
 export const submissionWorker = new Worker(
   'submission-queue',
   async (job: Job) => {
-    const { submissionId, userId, problemId, code, language: _language } = job.data;
+    const { submissionId, userId, problemId, code, files, language: _language } = job.data;
     logger.info({ submissionId, problemId, userId }, 'Processing submission job');
 
     const isPlayground = submissionId.startsWith('run-');
@@ -93,7 +96,13 @@ export const submissionWorker = new Worker(
       }));
 
       const executor = getExecutorForCategory(problem.category);
-      const execResult = await executor.execute(submissionId, code, formattedTestCases);
+      const execResult = await executor.execute(
+        submissionId,
+        code,
+        formattedTestCases,
+        undefined,
+        files,
+      );
 
       // 4. Map executor outputs to final submission statuses
       let finalStatus = 'ACCEPTED';

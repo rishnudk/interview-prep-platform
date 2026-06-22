@@ -25,6 +25,7 @@ import {
   History,
 } from 'lucide-react';
 import { cn } from '@/lib/utils';
+import ReactWorkspace from '@/components/workspace/ReactWorkspace';
 
 export default function ProblemWorkspacePage() {
   const { slug } = useParams() as { slug: string };
@@ -347,6 +348,10 @@ export default function ProblemWorkspacePage() {
         </Button>
       </div>
     );
+  }
+
+  if (problem.category === 'REACT') {
+    return <ReactWorkspace problem={problem} />;
   }
 
   return (

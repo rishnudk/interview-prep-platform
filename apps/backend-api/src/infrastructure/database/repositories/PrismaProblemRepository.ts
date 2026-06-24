@@ -72,10 +72,19 @@ export class PrismaProblemRepository implements IProblemRepository {
   async findBySlug(slug: string): Promise<Problem | null> {
     const prismaProblem = await prisma.problem.findUnique({
       where: { slug },
+      include: {
+        testCases: {
+          where: { isHidden: false },
+          orderBy: { order: 'asc' },
+        },
+      },
     });
 
     if (!prismaProblem) return null;
-    return this.mapPrismaProblem(prismaProblem);
+    return {
+      ...this.mapPrismaProblem(prismaProblem),
+      testCases: prismaProblem.testCases,
+    };
   }
 
   async findAll(

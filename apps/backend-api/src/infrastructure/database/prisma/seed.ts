@@ -1660,6 +1660,99 @@ The component should render:
         ],
       },
     },
+    {
+      title: 'Users Directory Query',
+      slug: 'users-directory-query',
+      description: `We have a table \`users\` with columns \`id\`, \`name\`, and \`age\`.
+      
+Write a query to select all users from the \`users\` table.
+
+### Example:
+**Input:**
+\`users\` table:
+| id | name  | age |
+|----|-------|-----|
+| 1  | Alice | 25  |
+
+**Output:**
+| id | name  | age |
+|----|-------|-----|
+| 1  | Alice | 25  |`,
+      difficulty: 'EASY',
+      category: 'SQL',
+      starterCode: `-- Write your SQL query here
+`,
+      solutionCode: 'SELECT * FROM users;',
+      tags: ['sql', 'basic'],
+      isPublished: true,
+      order: 29,
+      testCases: {
+        create: [
+          {
+            input:
+              '"CREATE TABLE users (id INTEGER PRIMARY KEY AUTOINCREMENT, name VARCHAR(100), age INTEGER); INSERT INTO users (name, age) VALUES (1, \\\'Alice\\\', 25);"',
+            expectedOutput: '[{"id":1,"name":"Alice","age":25}]',
+            isHidden: false,
+            order: 1,
+          },
+          {
+            input:
+              "\"CREATE TABLE users (id INTEGER PRIMARY KEY AUTOINCREMENT, name VARCHAR(100), age INTEGER); INSERT INTO users (name, age) VALUES (1, \\'John Doe\\', 30); INSERT INTO users (name, age) VALUES (2, \\'Jane Doe\\', 22);\"",
+            expectedOutput:
+              '[{"id":1,"name":"John Doe","age":30},{"id":2,"name":"Jane Doe","age":22}]',
+            isHidden: true,
+            order: 2,
+          },
+        ],
+      },
+    },
+    {
+      title: 'Query Active Mature Users',
+      slug: 'query-active-mature-users',
+      description: `Write an asynchronous function \`findUsers(db)\` that queries a MongoDB \`users\` collection.
+      
+Return an array of documents for users where \`age\` is greater than 25.
+
+### Example:
+**Input:**
+\`users\` collection:
+| name     | age |
+|----------|-----|
+| John Doe | 30  |
+| Alice    | 20  |
+
+**Output:**
+\`[ { "name": "John Doe", "age": 30 } ]\``,
+      difficulty: 'EASY',
+      category: 'MONGODB',
+      starterCode: `async function findUsers(db) {
+  // Write your code here
+}`,
+      solutionCode: `async function findUsers(db) {
+  return await db.collection('users').find({ age: { $gt: 25 } }).toArray();
+}`,
+      tags: ['mongodb', 'find'],
+      isPublished: true,
+      order: 30,
+      testCases: {
+        create: [
+          {
+            input:
+              '{"users":[{"_id":1,"name":"John Doe","age":30},{"_id":2,"name":"Alice","age":20}]}',
+            expectedOutput: '[{"_id":1,"name":"John Doe","age":30}]',
+            isHidden: false,
+            order: 1,
+          },
+          {
+            input:
+              '{"users":[{"_id":1,"name":"Bob","age":24},{"_id":2,"name":"Charlie","age":28}]}',
+            expectedOutput: '[{"_id":2,"name":"Charlie","age":28}]',
+            isHidden: true,
+            order: 2,
+          },
+        ],
+      },
+    },
   ];
 
   console.log(`🚀 Seeding ${problemsData.length} problems...`);

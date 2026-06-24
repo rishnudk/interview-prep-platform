@@ -70,11 +70,44 @@ describe('MongodbExecutor Unit Tests', () => {
   });
 
   describe('Sandbox Execution', () => {
-    it('should fail execution if function name cannot be extracted', async () => {
-      const result = await executor.execute('sub-123', 'console.log("hello");', testCases);
-      expect(result.passed).toBe(false);
-      expect(result.error).toContain('Syntax Error');
-      expect(mockStart).not.toHaveBeenCalled();
+    it('should successfully execute direct queries without function name extraction', async () => {
+      const mockRunnerOutput = JSON.stringify({
+        results: [
+          {
+            id: '1',
+            passed: true,
+            actual: [
+              { _id: 1, amount: 100 },
+              { _id: 2, amount: 200 },
+            ],
+            expected: [
+              { _id: 1, amount: 100 },
+              { _id: 2, amount: 200 },
+            ],
+            runtime: 5.6,
+            error: null,
+          },
+        ],
+      });
+
+      const mockStream = {
+        on: vi.fn((event, cb) => {
+          if (event === 'end') {
+            setTimeout(cb, 10);
+          }
+        }),
+      };
+      mockExecStart.mockResolvedValue(mockStream);
+
+      mockContainer.modem.demuxStream = vi.fn((_stream, stdout, _stderr) => {
+        stdout.write(Buffer.from(mockRunnerOutput));
+      });
+
+      const result = await executor.execute('sub-123', 'db.orders.find()', testCases);
+      expect(result.totalCases).toBe(1);
+      expect(result.passed).toBe(true);
+      expect(result.results[0].passed).toBe(true);
+      expect(mockStart).toHaveBeenCalled();
     });
 
     it('should return success when MongoDB runner output returns all passed', async () => {

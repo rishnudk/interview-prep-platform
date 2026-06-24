@@ -76,6 +76,13 @@ export default function ProblemWorkspacePage() {
         solvedCount: number;
         attemptCount: number;
         solutionCode?: string | null;
+        testCases?: Array<{
+          id: string;
+          input: string;
+          expectedOutput: string;
+          isHidden: boolean;
+          order: number;
+        }>;
       }>(`/api/problems/${slug}`);
     },
   });
@@ -439,6 +446,7 @@ export default function ProblemWorkspacePage() {
             handleRunCode={handleRunCode}
             handleSubmitCode={handleSubmitCode}
             category={problem.category}
+            testCases={problem.testCases}
           />
         </div>
       </div>

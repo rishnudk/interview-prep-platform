@@ -37,6 +37,7 @@ export interface Problem {
   attemptCount: number;
   createdAt: Date;
   updatedAt: Date;
+  testCases?: TestCase[];
 }
 
 // ============================================================

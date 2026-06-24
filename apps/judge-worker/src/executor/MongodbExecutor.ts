@@ -58,12 +58,55 @@ async function run() {
   try {
     await client.connect();
     
-    const targetFn = require('./solution');
-    if (!targetFn) {
-      console.log(JSON.stringify({
-        error: 'Target function "${functionName}" was not found or not exported properly.'
-      }));
-      process.exit(1);
+    let targetFn = null;
+    const isDirectQuery = process.env.DIRECT_QUERY === 'true';
+
+    if (!isDirectQuery) {
+      targetFn = require('./solution');
+      if (!targetFn) {
+        console.log(JSON.stringify({
+          error: 'Target function "${functionName}" was not found or not exported properly.'
+        }));
+        process.exit(1);
+      }
+    } else {
+      // Build function from direct query code
+      const userCode = fs.readFileSync(path.join(__dirname, 'solution.js'), 'utf8');
+      const lines = userCode.trim().split('\\n');
+      let lastLineIdx = -1;
+      for (let j = lines.length - 1; j >= 0; j--) {
+        if (lines[j].trim() !== '') {
+          lastLineIdx = j;
+          break;
+        }
+      }
+
+      if (lastLineIdx !== -1) {
+        let lastLine = lines[lastLineIdx].trim();
+        let hasSemicolon = false;
+        if (lastLine.endsWith(';')) {
+          lastLine = lastLine.slice(0, -1).trim();
+          hasSemicolon = true;
+        }
+
+        if (
+          !lastLine.startsWith('return') &&
+          !lastLine.startsWith('const') &&
+          !lastLine.startsWith('let') &&
+          !lastLine.startsWith('var')
+        ) {
+          lastLine = 'return ' + lastLine;
+        }
+
+        if (hasSemicolon) {
+          lastLine += ';';
+        }
+        lines[lastLineIdx] = lastLine;
+      }
+
+      const rewrittenCode = lines.join('\\n');
+      const AsyncFunction = Object.getPrototypeOf(async function(){}).constructor;
+      targetFn = new AsyncFunction('db', rewrittenCode);
     }
 
     const testCases = JSON.parse(fs.readFileSync(path.join(__dirname, 'testcases.json'), 'utf8'));
@@ -93,8 +136,25 @@ async function run() {
           }
         }
 
+        const dbProxy = new Proxy(db, {
+          get(target, prop) {
+            if (prop in target) {
+              if (typeof target[prop] === 'function') {
+                return target[prop].bind(target);
+              }
+              return target[prop];
+            }
+            return target.collection(prop);
+          }
+        });
+
         // Execute user query
-        const rawActual = await targetFn(db);
+        let rawActual = await targetFn(dbProxy);
+
+        // Auto-toArray cursor objects
+        if (rawActual && typeof rawActual.toArray === 'function') {
+          rawActual = await rawActual.toArray();
+        }
         
         // Serialize actual results to strip BSON types for standard JSON comparison
         actual = JSON.parse(JSON.stringify(rawActual));
@@ -152,18 +212,10 @@ run();
 
     try {
       const functionName = this.extractFunctionName(code);
-      if (!functionName) {
-        return {
-          passed: false,
-          passedCases: 0,
-          totalCases: testCases.length,
-          results: [],
-          error: 'Syntax Error: Could not find any declared functions or classes in your code.',
-        };
-      }
-
-      const solutionCode = `${code}\n\nmodule.exports = typeof ${functionName} !== 'undefined' ? ${functionName} : null;\n`;
-      const runnerCode = this.generateRunnerCode(functionName);
+      const solutionCode = functionName
+        ? `${code}\n\nmodule.exports = typeof ${functionName} !== 'undefined' ? ${functionName} : null;\n`
+        : code;
+      const runnerCode = this.generateRunnerCode(functionName || '');
 
       // Write temp files
       fs.mkdirSync(tempDir, { recursive: true });
@@ -192,6 +244,7 @@ run();
         Env: [
           `SUBMISSION_ID=${submissionId}`,
           `MONGO_URL=${process.env.MONGO_URL || 'mongodb://host.docker.internal:27017'}`,
+          `DIRECT_QUERY=${functionName ? 'false' : 'true'}`,
         ],
         HostConfig: {
           Memory: 256 * 1024 * 1024,

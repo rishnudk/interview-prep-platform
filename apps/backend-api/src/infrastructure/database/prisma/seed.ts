@@ -1690,14 +1690,14 @@ Write a query to select all users from the \`users\` table.
         create: [
           {
             input:
-              '"CREATE TABLE users (id INTEGER PRIMARY KEY AUTOINCREMENT, name VARCHAR(100), age INTEGER); INSERT INTO users (name, age) VALUES (1, \\\'Alice\\\', 25);"',
+              '"CREATE TABLE users (id INTEGER PRIMARY KEY AUTOINCREMENT, name VARCHAR(100), age INTEGER); INSERT INTO users (name, age) VALUES (\\\'Alice\\\', 25);"',
             expectedOutput: '[{"id":1,"name":"Alice","age":25}]',
             isHidden: false,
             order: 1,
           },
           {
             input:
-              "\"CREATE TABLE users (id INTEGER PRIMARY KEY AUTOINCREMENT, name VARCHAR(100), age INTEGER); INSERT INTO users (name, age) VALUES (1, \\'John Doe\\', 30); INSERT INTO users (name, age) VALUES (2, \\'Jane Doe\\', 22);\"",
+              "\"CREATE TABLE users (id INTEGER PRIMARY KEY AUTOINCREMENT, name VARCHAR(100), age INTEGER); INSERT INTO users (name, age) VALUES (\\'John Doe\\', 30); INSERT INTO users (name, age) VALUES (\\'Jane Doe\\', 22);\"",
             expectedOutput:
               '[{"id":1,"name":"John Doe","age":30},{"id":2,"name":"Jane Doe","age":22}]',
             isHidden: true,

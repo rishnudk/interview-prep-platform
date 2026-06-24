@@ -3,6 +3,7 @@
 import React, { useState } from 'react';
 import Link from 'next/link';
 import ReactMarkdown from 'react-markdown';
+import remarkGfm from 'remark-gfm';
 import { BookOpen, History, Sparkles, Loader2 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { useAuth, useToast } from '@/providers';
@@ -62,7 +63,7 @@ export function ReactWorkspaceDescriptionPanel({
       </div>
 
       <div className="flex-1 overflow-y-auto px-6 py-5 prose prose-indigo dark:prose-invert max-w-none text-sm text-zinc-300 scrollbar-thin">
-        <ReactMarkdown>{description}</ReactMarkdown>
+        <ReactMarkdown remarkPlugins={[remarkGfm]}>{description}</ReactMarkdown>
 
         {/* AI Hint Section */}
         <div className="mt-8 pt-6 border-t border-zinc-800 not-prose">

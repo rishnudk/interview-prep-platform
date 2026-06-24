@@ -147,7 +147,10 @@ describe('Submission Endpoints Integration', () => {
 
   describe('GET /api/submissions/:id', () => {
     it('should retrieve a single submission with result structure', async () => {
-      // 1. Manually add a submission result so we can test retrieving it
+      // 1. Manually add a submission result so we can test retrieving it (clear any background results first)
+      await prisma.submissionResult.deleteMany({
+        where: { submissionId },
+      });
       await prisma.submissionResult.create({
         data: {
           submissionId,

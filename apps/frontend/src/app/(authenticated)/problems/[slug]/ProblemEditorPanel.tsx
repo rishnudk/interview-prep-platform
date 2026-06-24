@@ -111,9 +111,16 @@ export function ProblemEditorPanel({
             .join(';\n') + ';';
 
         return (
-          <pre className="p-3.5 bg-zinc-900/70 border border-zinc-800/80 rounded-2xl text-zinc-200 whitespace-pre-wrap overflow-x-auto text-[11px] font-mono leading-relaxed select-text">
-            <code>{formattedSql}</code>
-          </pre>
+          <div className="rounded-2xl border border-zinc-800 bg-zinc-950/40 overflow-hidden shadow-sm">
+            <div className="bg-zinc-900/60 px-4 py-2 border-b border-zinc-800/40 flex items-center justify-between select-none">
+              <span className="text-[9px] text-zinc-500 font-extrabold uppercase tracking-widest font-mono">
+                schema.sql
+              </span>
+            </div>
+            <pre className="p-4 text-zinc-200 whitespace-pre-wrap overflow-x-auto text-[11px] font-mono leading-relaxed select-text bg-[#151515]/20">
+              <code>{formattedSql}</code>
+            </pre>
+          </div>
         );
       }
 
@@ -134,16 +141,30 @@ export function ProblemEditorPanel({
             }
             if (commands.length > 0) {
               return (
-                <pre className="p-3.5 bg-zinc-900/70 border border-zinc-800/80 rounded-2xl text-zinc-200 whitespace-pre-wrap overflow-x-auto text-[11px] font-mono leading-relaxed select-text">
-                  <code>{commands.join('\n\n')}</code>
-                </pre>
+                <div className="rounded-2xl border border-zinc-800 bg-zinc-950/40 overflow-hidden shadow-sm">
+                  <div className="bg-zinc-900/60 px-4 py-2 border-b border-zinc-800/40 flex items-center justify-between select-none">
+                    <span className="text-[9px] text-zinc-500 font-extrabold uppercase tracking-widest font-mono">
+                      seed.js
+                    </span>
+                  </div>
+                  <pre className="p-4 text-zinc-200 whitespace-pre-wrap overflow-x-auto text-[11px] font-mono leading-relaxed select-text bg-[#151515]/20">
+                    <code>{commands.join('\n\n')}</code>
+                  </pre>
+                </div>
               );
             }
           }
           return (
-            <pre className="p-3.5 bg-zinc-900/70 border border-zinc-800/80 rounded-2xl text-zinc-200 whitespace-pre-wrap overflow-x-auto text-[11px] font-mono leading-relaxed select-text">
-              <code>{JSON.stringify(parsed, null, 2)}</code>
-            </pre>
+            <div className="rounded-2xl border border-zinc-800 bg-zinc-950/40 overflow-hidden shadow-sm">
+              <div className="bg-zinc-900/60 px-4 py-2 border-b border-zinc-800/40 flex items-center justify-between select-none">
+                <span className="text-[9px] text-zinc-500 font-extrabold uppercase tracking-widest font-mono">
+                  seed.json
+                </span>
+              </div>
+              <pre className="p-4 text-zinc-200 whitespace-pre-wrap overflow-x-auto text-[11px] font-mono leading-relaxed select-text bg-[#151515]/20">
+                <code>{JSON.stringify(parsed, null, 2)}</code>
+              </pre>
+            </div>
           );
         }
         return (
@@ -161,13 +182,18 @@ export function ProblemEditorPanel({
 
       if (Array.isArray(parsedArgs)) {
         return (
-          <div className="space-y-2 select-text">
+          <div className="space-y-3.5 select-text">
             {parsedArgs.map((arg, argIdx) => (
-              <div key={argIdx} className="space-y-1">
-                <span className="text-[10px] text-zinc-500 font-bold uppercase tracking-wider">
-                  Argument {argIdx + 1}
-                </span>
-                <pre className="p-3 bg-zinc-900/70 border border-zinc-800/80 rounded-2xl text-zinc-200 text-[11px] font-mono overflow-x-auto">
+              <div
+                key={argIdx}
+                className="rounded-2xl border border-zinc-800 bg-zinc-950/40 overflow-hidden shadow-sm"
+              >
+                <div className="bg-zinc-900/60 px-4 py-2 border-b border-zinc-800/40 flex items-center justify-between select-none">
+                  <span className="text-[9px] text-zinc-500 font-extrabold uppercase tracking-widest font-mono">
+                    Argument {argIdx + 1}
+                  </span>
+                </div>
+                <pre className="p-4 text-zinc-200 text-[11px] font-mono overflow-x-auto leading-relaxed bg-[#151515]/20">
                   <code>{JSON.stringify(arg, null, 2)}</code>
                 </pre>
               </div>
@@ -195,55 +221,102 @@ export function ProblemEditorPanel({
     try {
       let parsed = JSON.parse(expectedStr);
 
-      if (category === 'SQL' && Array.isArray(parsed) && parsed.length > 0) {
+      if (
+        (category === 'SQL' || category === 'MONGODB') &&
+        Array.isArray(parsed) &&
+        parsed.length > 0 &&
+        typeof parsed[0] === 'object' &&
+        parsed[0] !== null
+      ) {
         const headers = Object.keys(parsed[0]);
         return (
-          <div className="border border-zinc-800 rounded-2xl overflow-hidden bg-zinc-900/30 select-text">
-            <table className="min-w-full divide-y divide-zinc-800 font-mono text-[11px]">
-              <thead className="bg-zinc-900/60 text-zinc-400 select-none">
-                <tr>
-                  {headers.map((h) => (
-                    <th
-                      key={h}
-                      className="px-4 py-2.5 text-left font-bold uppercase tracking-wider"
-                    >
-                      {h}
-                    </th>
-                  ))}
-                </tr>
-              </thead>
-              <tbody className="divide-y divide-zinc-800/60 text-zinc-300">
-                {parsed.map((row, rowIdx) => (
-                  <tr key={rowIdx} className="hover:bg-zinc-800/20">
+          <div className="rounded-2xl border border-zinc-800 bg-zinc-950/40 overflow-hidden shadow-sm select-text">
+            <div className="bg-zinc-900/60 px-4 py-2.5 border-b border-zinc-800/40 flex items-center justify-between select-none">
+              <span className="text-[9px] text-emerald-500 font-extrabold uppercase tracking-widest font-mono">
+                Expected Rows
+              </span>
+            </div>
+            <div className="overflow-x-auto scrollbar-thin">
+              <table className="min-w-full divide-y divide-zinc-800 font-mono text-[11px] table-auto">
+                <thead className="bg-zinc-900/40 text-zinc-400 select-none">
+                  <tr>
                     {headers.map((h) => (
-                      <td key={h} className="px-4 py-2">
-                        {row[h] === null ? (
-                          <span className="text-zinc-600 italic">NULL</span>
-                        ) : (
-                          String(row[h])
-                        )}
-                      </td>
+                      <th
+                        key={h}
+                        className="px-4 py-2.5 text-left font-bold uppercase tracking-wider border-r border-zinc-800/30 last:border-r-0"
+                      >
+                        {h}
+                      </th>
                     ))}
                   </tr>
-                ))}
-              </tbody>
-            </table>
+                </thead>
+                <tbody className="divide-y divide-zinc-800/30 text-zinc-200">
+                  {parsed.map((row, rowIdx) => (
+                    <tr
+                      key={rowIdx}
+                      className="hover:bg-zinc-800/20 odd:bg-zinc-900/5 even:bg-zinc-900/15 transition-colors"
+                    >
+                      {headers.map((h) => {
+                        const val = row[h];
+                        let renderedVal = '';
+                        if (val === null) {
+                          renderedVal = 'NULL';
+                        } else if (typeof val === 'object') {
+                          renderedVal = JSON.stringify(val);
+                        } else {
+                          renderedVal = String(val);
+                        }
+
+                        return (
+                          <td
+                            key={h}
+                            className="px-4 py-2.5 whitespace-nowrap border-r border-zinc-800/20 last:border-r-0"
+                          >
+                            {val === null ? (
+                              <span className="text-zinc-600 italic font-medium">
+                                {renderedVal}
+                              </span>
+                            ) : (
+                              renderedVal
+                            )}
+                          </td>
+                        );
+                      })}
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
           </div>
         );
       }
 
       if (typeof parsed === 'object') {
         return (
-          <pre className="p-3.5 bg-zinc-900/70 border border-zinc-800/80 rounded-2xl text-zinc-200 text-[11px] font-mono overflow-x-auto leading-relaxed select-text">
-            <code>{JSON.stringify(parsed, null, 2)}</code>
-          </pre>
+          <div className="rounded-2xl border border-zinc-800 bg-zinc-950/40 overflow-hidden shadow-sm select-text">
+            <div className="bg-zinc-900/60 px-4 py-2.5 border-b border-zinc-800/40 flex items-center justify-between select-none">
+              <span className="text-[9px] text-emerald-500 font-extrabold uppercase tracking-widest font-mono">
+                Expected Result
+              </span>
+            </div>
+            <pre className="p-4 text-zinc-200 text-[11px] font-mono overflow-x-auto leading-relaxed bg-[#151515]/20">
+              <code>{JSON.stringify(parsed, null, 2)}</code>
+            </pre>
+          </div>
         );
       }
 
       return (
-        <pre className="p-3.5 bg-zinc-900/70 border border-zinc-800/80 rounded-2xl text-zinc-200 text-[11px] font-mono select-text">
-          <code>{String(parsed)}</code>
-        </pre>
+        <div className="rounded-2xl border border-zinc-800 bg-zinc-950/40 overflow-hidden shadow-sm select-text">
+          <div className="bg-zinc-900/60 px-4 py-2.5 border-b border-zinc-800/40 flex items-center justify-between select-none">
+            <span className="text-[9px] text-emerald-500 font-extrabold uppercase tracking-widest font-mono">
+              Expected Result
+            </span>
+          </div>
+          <pre className="p-4 text-zinc-200 text-[11px] font-mono bg-[#151515]/20">
+            <code>{String(parsed)}</code>
+          </pre>
+        </div>
       );
     } catch (err) {
       return (

@@ -3,6 +3,7 @@
 import React, { useState } from 'react';
 import Link from 'next/link';
 import ReactMarkdown from 'react-markdown';
+import remarkGfm from 'remark-gfm';
 import { BookOpen, History, Sparkles, FileCode, Lock, Unlock, Eye, X } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { useToast } from '@/providers';
@@ -100,7 +101,7 @@ export function ProblemDescriptionPanel({
       {/* Description Tab Content */}
       {activeTab === 'description' && (
         <div className="flex-1 overflow-y-auto px-6 py-5 prose prose-indigo dark:prose-invert max-w-none scrollbar-thin">
-          <ReactMarkdown>{description}</ReactMarkdown>
+          <ReactMarkdown remarkPlugins={[remarkGfm]}>{description}</ReactMarkdown>
 
           {/* Locked Hints Section */}
           <div className="mt-8 pt-6 border-t border-border/60 not-prose space-y-4">

@@ -110,6 +110,50 @@ describe('MongodbExecutor Unit Tests', () => {
       expect(mockStart).toHaveBeenCalled();
     });
 
+    it('should successfully execute multi-line direct queries', async () => {
+      const mockRunnerOutput = JSON.stringify({
+        results: [
+          {
+            id: '1',
+            passed: true,
+            actual: [
+              { _id: 1, amount: 100 },
+              { _id: 2, amount: 200 },
+            ],
+            expected: [
+              { _id: 1, amount: 100 },
+              { _id: 2, amount: 200 },
+            ],
+            runtime: 5.6,
+            error: null,
+          },
+        ],
+      });
+
+      const mockStream = {
+        on: vi.fn((event, cb) => {
+          if (event === 'end') {
+            setTimeout(cb, 10);
+          }
+        }),
+      };
+      mockExecStart.mockResolvedValue(mockStream);
+
+      mockContainer.modem.demuxStream = vi.fn((_stream, stdout, _stderr) => {
+        stdout.write(Buffer.from(mockRunnerOutput));
+      });
+
+      const result = await executor.execute(
+        'sub-123',
+        `db.collection('orders')
+          .find({ status: 'active' })
+          .sort({ name: 1 })`,
+        testCases,
+      );
+      expect(result.passed).toBe(true);
+      expect(mockStart).toHaveBeenCalled();
+    });
+
     it('should return success when MongoDB runner output returns all passed', async () => {
       const mockRunnerOutput = JSON.stringify({
         results: [

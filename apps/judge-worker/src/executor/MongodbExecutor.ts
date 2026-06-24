@@ -82,26 +82,50 @@ async function run() {
       }
 
       if (lastLineIdx !== -1) {
-        let lastLine = lines[lastLineIdx].trim();
-        let hasSemicolon = false;
-        if (lastLine.endsWith(';')) {
-          lastLine = lastLine.slice(0, -1).trim();
-          hasSemicolon = true;
+        let statementStartIdx = lastLineIdx;
+        while (statementStartIdx > 0) {
+          const prevLine = lines[statementStartIdx - 1].trim();
+          const currLine = lines[statementStartIdx].trim();
+          
+          if (prevLine.endsWith(';')) {
+            break;
+          }
+
+          if (
+            currLine.startsWith('.') ||
+            prevLine.endsWith('.') ||
+            prevLine.endsWith('(') ||
+            prevLine.endsWith('[') ||
+            prevLine.endsWith('{') ||
+            prevLine.endsWith(',') ||
+            prevLine.endsWith('+') ||
+            prevLine.endsWith('-') ||
+            prevLine.endsWith('*') ||
+            prevLine.endsWith('/') ||
+            prevLine.endsWith('=') ||
+            prevLine.endsWith('?') ||
+            prevLine.endsWith(':') ||
+            currLine.startsWith(')') ||
+            currLine.startsWith(']') ||
+            currLine.startsWith('}')
+          ) {
+            statementStartIdx--;
+          } else {
+            break;
+          }
         }
 
+        const lineText = lines[statementStartIdx];
+        const leadingSpaces = lineText.match(/^\s*/)?.[0] || '';
+        const trimmedText = lineText.trim();
         if (
-          !lastLine.startsWith('return') &&
-          !lastLine.startsWith('const') &&
-          !lastLine.startsWith('let') &&
-          !lastLine.startsWith('var')
+          !trimmedText.startsWith('return') &&
+          !trimmedText.startsWith('const') &&
+          !trimmedText.startsWith('let') &&
+          !trimmedText.startsWith('var')
         ) {
-          lastLine = 'return ' + lastLine;
+          lines[statementStartIdx] = leadingSpaces + 'return ' + trimmedText;
         }
-
-        if (hasSemicolon) {
-          lastLine += ';';
-        }
-        lines[lastLineIdx] = lastLine;
       }
 
       const rewrittenCode = lines.join('\\n');

@@ -1,4 +1,5 @@
 import { prisma } from '../../../config/database';
+import argon2 from 'argon2';
 
 async function main() {
   console.log('🌱 Starting database seeding...');
@@ -8,6 +9,19 @@ async function main() {
   await prisma.user.deleteMany({});
 
   console.log('🧹 Cleaned existing database tables');
+
+  // Seed default admin user so developer doesn't lose access
+  const hashedPassword = await argon2.hash('Rishnu123');
+  await prisma.user.create({
+    data: {
+      name: 'Rishnu',
+      email: 'rishnu5@gmail.com',
+      password: hashedPassword,
+      role: 'ADMIN',
+      streak: 0,
+    },
+  });
+  console.log('✅ Seeded default user: rishnu5@gmail.com');
 
   const problemsData = [
     {

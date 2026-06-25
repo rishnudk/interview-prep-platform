@@ -14,6 +14,7 @@
     "migrate:dev": "dotenv -e ../../.env -- prisma migrate dev",
     "migrate:deploy": "dotenv -e ../../.env -- prisma migrate deploy",
     "seed": "dotenv -e ../../.env -- tsx src/infrastructure/database/prisma/seed.ts",
+    "db:seed:arrays": "dotenv -e ../../.env -- tsx src/infrastructure/database/prisma/seed-arrays.ts",
     "studio": "dotenv -e ../../.env -- prisma studio",
     "generate": "dotenv -e ../../.env -- prisma generate"
   },

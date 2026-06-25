@@ -26,7 +26,9 @@ describe('Admin Endpoints Integration', () => {
   beforeAll(async () => {
     await prisma.submissionResult.deleteMany({});
     await prisma.submission.deleteMany({});
-    await prisma.testCase.deleteMany({});
+    await prisma.testCase.deleteMany({
+      where: { problem: { slug: { startsWith: 'admin-route-problem' } } },
+    });
     await prisma.problem.deleteMany({
       where: { slug: { startsWith: 'admin-route-problem' } },
     });
@@ -55,7 +57,11 @@ describe('Admin Endpoints Integration', () => {
   });
 
   afterAll(async () => {
-    await prisma.testCase.deleteMany({});
+    if (problemId) {
+      await prisma.testCase.deleteMany({
+        where: { problemId },
+      });
+    }
     await prisma.problem.deleteMany({
       where: { id: problemId },
     });

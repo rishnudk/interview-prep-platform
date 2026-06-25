@@ -7,10 +7,9 @@ import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { RegisterSchema, type RegisterDTO } from '@interviewprep/shared-types';
 import { useAuth, useToast } from '@/providers';
-import { Card, CardHeader, CardTitle, CardDescription, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
-import { Eye, EyeOff, Loader2, AlertCircle, Terminal } from 'lucide-react';
+import { Eye, EyeOff, Loader2, AlertCircle } from 'lucide-react';
 import { PasswordStrengthMeter } from './PasswordStrengthMeter';
 import { OAuthButtons } from './OAuthButtons';
 
@@ -55,69 +54,77 @@ export default function RegisterForm() {
   };
 
   return (
-    <Card className="border-border bg-card/60 backdrop-blur-md shadow-xl rounded-3xl overflow-hidden relative">
-      <CardHeader className="pt-8 pb-6 px-8 text-center flex flex-col items-center">
-        {/* Brand Logo */}
-        <div className="w-11 h-11 rounded-2xl bg-gradient-to-tr from-violet-600 to-indigo-500 flex items-center justify-center text-white shadow-md shadow-indigo-500/10 mb-4">
-          <Terminal size={22} />
-        </div>
-        <CardTitle className="text-2xl font-bold tracking-tight">Create an account</CardTitle>
-        <CardDescription className="text-sm text-muted-foreground mt-1.5">
+    <div className="bg-[#191919] border border-white/5 rounded-[16px] shadow-[0_0_44px_rgba(0,0,0,0.8)] overflow-hidden">
+      <div className="pt-10 pb-6 px-8 text-center flex flex-col items-center">
+        <h1 className="text-2xl font-bold tracking-[-0.05em] text-[#ffffff] mb-2">
+          Create an account
+        </h1>
+        <p className="text-[#868f97] text-sm">
           Join CodePrep to practice challenges and master tech interviews
-        </CardDescription>
-      </CardHeader>
-      <CardContent className="px-8 pb-8">
+        </p>
+      </div>
+
+      <div className="px-8 pb-8">
         {serverError && (
-          <div className="mb-6 p-4 rounded-2xl bg-destructive/10 border border-destructive/20 text-destructive flex items-start gap-3 text-xs leading-normal">
-            <AlertCircle size={16} className="shrink-0 mt-0.5" />
-            <div className="font-semibold">{serverError}</div>
+          <div className="mb-6 p-4 rounded-xl bg-red-500/10 border border-red-500/20 text-red-400 flex items-start gap-3 text-sm">
+            <AlertCircle size={18} className="shrink-0 mt-0.5" />
+            <div className="font-medium">{serverError}</div>
           </div>
         )}
 
-        <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
+        <form onSubmit={handleSubmit(onSubmit)} className="space-y-5">
           {/* Name input */}
-          <div className="space-y-1.5">
-            <label className="text-xs font-semibold text-muted-foreground/80" htmlFor="name">
+          <div className="space-y-2">
+            <label
+              className="text-xs font-semibold text-[#868f97] uppercase tracking-wider"
+              htmlFor="name"
+            >
               Full Name
             </label>
             <Input
               id="name"
               type="text"
               placeholder="John Doe"
-              className={`rounded-xl h-11 border-border bg-background/50 focus:border-ring ${
-                errors.name ? 'border-destructive focus:ring-destructive/25' : ''
+              className={`rounded-xl h-11 border-white/10 bg-[#131313] text-[#ffffff] placeholder:text-[#525252] focus:border-[#479ffa] focus:ring-0 shadow-inner ${
+                errors.name ? 'border-red-500' : ''
               }`}
               {...register('name')}
               disabled={isSubmitting}
             />
             {errors.name && (
-              <p className="text-[11px] font-semibold text-destructive">{errors.name.message}</p>
+              <p className="text-xs font-medium text-red-400">{errors.name.message}</p>
             )}
           </div>
 
           {/* Email input */}
-          <div className="space-y-1.5">
-            <label className="text-xs font-semibold text-muted-foreground/80" htmlFor="email">
+          <div className="space-y-2">
+            <label
+              className="text-xs font-semibold text-[#868f97] uppercase tracking-wider"
+              htmlFor="email"
+            >
               Email Address
             </label>
             <Input
               id="email"
               type="email"
               placeholder="name@example.com"
-              className={`rounded-xl h-11 border-border bg-background/50 focus:border-ring ${
-                errors.email ? 'border-destructive focus:ring-destructive/25' : ''
+              className={`rounded-xl h-11 border-white/10 bg-[#131313] text-[#ffffff] placeholder:text-[#525252] focus:border-[#479ffa] focus:ring-0 shadow-inner ${
+                errors.email ? 'border-red-500' : ''
               }`}
               {...register('email')}
               disabled={isSubmitting}
             />
             {errors.email && (
-              <p className="text-[11px] font-semibold text-destructive">{errors.email.message}</p>
+              <p className="text-xs font-medium text-red-400">{errors.email.message}</p>
             )}
           </div>
 
           {/* Password input */}
-          <div className="space-y-1.5">
-            <label className="text-xs font-semibold text-muted-foreground/80" htmlFor="password">
+          <div className="space-y-2">
+            <label
+              className="text-xs font-semibold text-[#868f97] uppercase tracking-wider"
+              htmlFor="password"
+            >
               Password
             </label>
             <div className="relative">
@@ -125,15 +132,15 @@ export default function RegisterForm() {
                 id="password"
                 type={showPassword ? 'text' : 'password'}
                 placeholder="••••••••"
-                className={`rounded-xl h-11 pr-11 border-border bg-background/50 focus:border-ring ${
-                  errors.password ? 'border-destructive focus:ring-destructive/25' : ''
+                className={`rounded-xl h-11 pr-11 border-white/10 bg-[#131313] text-[#ffffff] placeholder:text-[#525252] focus:border-[#479ffa] focus:ring-0 shadow-inner ${
+                  errors.password ? 'border-red-500' : ''
                 }`}
                 {...register('password')}
                 disabled={isSubmitting}
               />
               <button
                 type="button"
-                className="absolute inset-y-0 right-0 pr-3.5 flex items-center text-muted-foreground/60 hover:text-foreground transition-colors"
+                className="absolute inset-y-0 right-0 pr-4 flex items-center text-[#868f97] hover:text-[#ffffff] transition-colors"
                 onClick={() => setShowPassword(!showPassword)}
                 disabled={isSubmitting}
               >
@@ -141,9 +148,7 @@ export default function RegisterForm() {
               </button>
             </div>
             {errors.password && (
-              <p className="text-[11px] font-semibold text-destructive">
-                {errors.password.message}
-              </p>
+              <p className="text-xs font-medium text-red-400">{errors.password.message}</p>
             )}
           </div>
 
@@ -153,7 +158,7 @@ export default function RegisterForm() {
           {/* Submit button */}
           <Button
             type="submit"
-            className="w-full h-11 rounded-xl bg-gradient-to-r from-indigo-600 to-violet-600 hover:from-indigo-50 hover:to-violet-500 font-semibold text-white shadow-md shadow-indigo-500/10 transition-all active:scale-[0.98] mt-6"
+            className="w-full h-11 rounded-full bg-[#0b0b0b] hover:bg-[#191919] text-[#ffffff] font-medium border border-white/10 shadow-[0_0_14px_rgba(255,255,255,0.15)] transition-all mt-8"
             disabled={isSubmitting}
           >
             {isSubmitting ? (
@@ -168,29 +173,29 @@ export default function RegisterForm() {
         </form>
 
         {/* Divider */}
-        <div className="relative my-6 flex items-center">
-          <div className="flex-grow border-t border-border/60"></div>
-          <span className="mx-4 flex-shrink text-xs text-muted-foreground/60 font-semibold uppercase tracking-wider">
+        <div className="relative my-8 flex items-center">
+          <div className="flex-grow border-t border-white/5"></div>
+          <span className="mx-4 text-[10px] text-[#868f97] font-semibold uppercase tracking-wider">
             Or continue with
           </span>
-          <div className="flex-grow border-t border-border/60"></div>
+          <div className="flex-grow border-t border-white/5"></div>
         </div>
 
         {/* OAuth Buttons */}
         <OAuthButtons disabled={isSubmitting} />
 
-        <div className="text-center">
-          <p className="text-xs text-muted-foreground">
+        <div className="text-center mt-6">
+          <p className="text-sm text-[#868f97]">
             Already have an account?{' '}
             <Link
               href="/login"
-              className="font-bold text-indigo-600 dark:text-indigo-400 hover:underline"
+              className="font-medium text-[#ffffff] hover:text-[#cccccc] transition-colors"
             >
               Sign In
             </Link>
           </p>
         </div>
-      </CardContent>
-    </Card>
+      </div>
+    </div>
   );
 }

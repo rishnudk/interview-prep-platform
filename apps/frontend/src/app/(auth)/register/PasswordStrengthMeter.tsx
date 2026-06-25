@@ -25,69 +25,69 @@ export function PasswordStrengthMeter({ password }: PasswordStrengthMeterProps) 
   };
 
   const getStrengthColor = () => {
-    if (score <= 1) return 'bg-rose-500';
-    if (score <= 3) return 'bg-amber-500';
-    return 'bg-emerald-500';
+    if (score <= 1) return 'bg-[#ffa16c]'; // Fey Ember for Weak
+    if (score <= 3) return 'bg-[#ffd166]'; // Yellowish for Medium
+    return 'bg-[#4ebe96]'; // Fey Growth for Strong
+  };
+
+  const getTextColor = () => {
+    if (score <= 1) return 'text-[#ffa16c]';
+    if (score <= 3) return 'text-[#ffd166]';
+    return 'text-[#4ebe96]';
   };
 
   return (
-    <div className="space-y-2.5 pt-1">
-      <div className="flex items-center justify-between text-xs font-semibold">
-        <span className="text-muted-foreground/80">Password Strength:</span>
-        <span
-          className={
-            score === 4 ? 'text-emerald-500' : score >= 2 ? 'text-amber-500' : 'text-rose-500'
-          }
-        >
-          {getStrengthText()}
-        </span>
+    <div className="space-y-3 pt-2 pb-1">
+      <div className="flex items-center justify-between text-xs font-semibold uppercase tracking-wider">
+        <span className="text-[#868f97]">Password Strength</span>
+        <span className={getTextColor()}>{getStrengthText()}</span>
       </div>
 
       {/* Animated Progress Bar */}
-      <div className="w-full h-1.5 bg-muted rounded-full overflow-hidden flex gap-0.5">
+      <div className="w-full h-1 bg-white/5 rounded-full overflow-hidden flex gap-1">
         {[1, 2, 3, 4].map((barIdx) => (
           <div
             key={barIdx}
             className={`flex-1 h-full rounded-full transition-all duration-300 ${
-              score >= barIdx ? getStrengthColor() : 'bg-muted'
+              score >= barIdx ? getStrengthColor() : 'bg-transparent'
             }`}
           />
         ))}
       </div>
 
       {/* Requirement Checklist */}
-      <ul className="text-[10px] grid grid-cols-2 gap-x-4 gap-y-1.5 pt-1">
-        <li className="flex items-center gap-1.5 font-semibold text-muted-foreground">
+      <ul className="text-[11px] grid grid-cols-2 gap-x-4 gap-y-2 pt-2">
+        <li className="flex items-center gap-2 font-medium text-[#868f97]">
           {criteria.length ? (
-            <Check size={11} className="text-emerald-500 shrink-0" />
+            <Check size={12} className="text-[#4ebe96] shrink-0" />
           ) : (
-            <X size={11} className="text-muted-foreground/60 shrink-0" />
+            <div className="w-3 h-3 border border-[#868f97]/50 rounded-full shrink-0" />
           )}
-          <span className={criteria.length ? 'text-emerald-500/90' : ''}>8+ Characters</span>
+          <span className={criteria.length ? 'text-[#ffffff]' : ''}>8+ Characters</span>
         </li>
-        <li className="flex items-center gap-1.5 font-semibold text-muted-foreground">
+        <li className="flex items-center gap-2 font-medium text-[#868f97]">
           {criteria.uppercase ? (
-            <Check size={11} className="text-emerald-500 shrink-0" />
+            <Check size={12} className="text-[#4ebe96] shrink-0" />
           ) : (
-            <X size={11} className="text-muted-foreground/60 shrink-0" />
+            <div className="w-3 h-3 border border-[#868f97]/50 rounded-full shrink-0" />
           )}
-          <span className={criteria.uppercase ? 'text-emerald-500/90' : ''}>Uppercase Letter</span>
+          <span className={criteria.uppercase ? 'text-[#ffffff]' : ''}>Uppercase</span>
         </li>
-        <li className="flex items-center gap-1.5 font-semibold text-muted-foreground">
+        <li className="flex items-center gap-2 font-medium text-[#868f97]">
           {criteria.lowercase ? (
-            <Check size={11} className="text-emerald-500 shrink-0" />
+            <Check size={12} className="text-[#4ebe96] shrink-0" />
           ) : (
-            <X size={11} className="text-muted-foreground/60 shrink-0" />
+            <div className="w-3 h-3 border border-[#868f97]/50 rounded-full shrink-0" />
           )}
-          <span className={criteria.lowercase ? 'text-emerald-500/90' : ''}>Lowercase Letter</span>
+          <span className={criteria.lowercase ? 'text-[#ffffff]' : ''}>Lowercase</span>
         </li>
-        <li className="flex items-center gap-1.5 font-semibold text-muted-foreground">
+        <li className="flex items-center gap-2 font-medium text-[#868f97]">
           {criteria.number ? (
-            <Check size={11} className="text-emerald-500 shrink-0" />
+            <Check size={12} className="text-[#4ebe96] shrink-0" />
           ) : (
-            <X size={11} className="text-muted-foreground/60 shrink-0" />
+            <div className="w-3 h-3 border border-[#868f97]/50 rounded-full shrink-0" />
           )}
-          <span className={criteria.number ? 'text-emerald-500/90' : ''}>At least one number</span>
+          <span className={criteria.number ? 'text-[#ffffff]' : ''}>Number</span>
         </li>
       </ul>
     </div>

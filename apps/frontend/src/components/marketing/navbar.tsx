@@ -2,7 +2,7 @@ import Link from 'next/link';
 
 export function Navbar() {
   return (
-    <nav className="flex items-center justify-between px-6 py-4 max-w-[1200px] mx-auto w-full">
+    <nav className="relative z-50 flex items-center justify-between px-6 py-4 max-w-[1200px] mx-auto w-full">
       <div className="flex items-center gap-12">
         <Link href="/" className="text-fey-white text-lg font-bold tracking-[-0.053em]">
           InterviewPrep

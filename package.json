@@ -22,7 +22,8 @@
     "db:seed:arrays": "npm run db:seed:arrays --workspace=apps/backend-api",
     "db:seed:other-js": "npm run db:seed:other-js --workspace=apps/backend-api",
     "db:studio": "npm run studio --workspace=apps/backend-api",
-    "prepare": "husky"
+    "prepare": "husky",
+    "postinstall": "prisma generate --schema=apps/backend-api/src/infrastructure/database/prisma/schema.prisma"
   },
   "devDependencies": {
     "dotenv-cli": "^11.0.0",
